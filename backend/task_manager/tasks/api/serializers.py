@@ -1,5 +1,8 @@
 from django.contrib.auth.models import User
+from .models import Profile
 from rest_framework import serializers
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.http import urlsafe_base64_decode
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     
@@ -48,3 +51,36 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             password=validated_data['password1'],  
         )
         return user
+    
+class EmailSerializer(serializers.Serializer):
+    
+    email = serializers.EmailField()
+    
+class ResetPasswordSerializer(serializers.Serializer):
+    new_password = serializers.CharField(write_only=True, required=True)
+    confirm_password = serializers.CharField(write_only=True, required=True)
+
+    def validate(self, data):
+        new_password = data.get('new_password')
+        confirm_password = data.get('confirm_password')
+        token = self.context.get("kwargs").get("token") # type: ignore
+        encoded_pk = self.context.get("kwargs").get("encoded_pk") # type: ignore
+        
+        if new_password != confirm_password:
+            raise serializers.ValidationError("Passwords do not match.")
+
+        if token is None or encoded_pk is None:
+            raise serializers.ValidationError("Missing data.")
+        
+        pk = urlsafe_base64_decode(encoded_pk).decode()
+        user = User.objects.get(pk=pk)
+        
+        if not PasswordResetTokenGenerator().check_token(user, token):
+            raise serializers.ValidationError("The reset token is invalid")
+       
+        return data
+
+    def save(self, user):
+        new_password = self.validated_data['new_password'] # type: ignore
+        user.set_password(new_password)
+        user.save()
