@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -188,3 +189,9 @@ EMAIL_PORT = 587  # Port for outgoing SMTP server
 EMAIL_USE_TLS = True  # Enable TLS (Transport Layer Security) for security
 EMAIL_HOST_USER = 'your_email@example.com'  # Your Gmail address for sending emails
 EMAIL_HOST_PASSWORD = 'your_email_password'  # Your Gmail password or app password for sending emails
+
+
+#photo upload
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
