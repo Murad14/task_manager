@@ -1,18 +1,14 @@
 from django.contrib import admin
 from django.urls import path, include
-from todo .api import views
+from todo.api.views import TaskListCreateView, TaskRetrieveUpdateDestroyView, PhotoListCreateView, PhotoRetrieveUpdateDestroyView
 from rest_framework import routers
 from django.conf import settings
 from django.conf.urls.static import static
 
 
-
-router = routers.DefaultRouter()
-router.register(r'tasks', views.TaskViewSet, 'task')    
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('tasks.api.urls')),
-    path('api/todo/', include(router.urls)),
+    path('api/todo/', include('todo.api.urls')),
 ] 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

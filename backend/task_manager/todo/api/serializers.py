@@ -1,8 +1,20 @@
 from rest_framework import serializers
 from ..models import Task, Photo
 
+class PhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Photo
+        fields = (
+            'id',
+            'image',
+            'uploaded_at',
+        )
+        read_only_fields = ('id', 'uploaded_at',)
+
 class TaskSerializer(serializers.ModelSerializer):
+    photos = PhotoSerializer(many=True, read_only=True)  
     
+
     class Meta:
         model = Task
         fields = (
@@ -15,17 +27,7 @@ class TaskSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
             'creator',
+            'photos',
         )
-        read_only_fields = ('id', 'created_at', 'updated_at', 'creator',)
-
-class PhotoSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Photo
-        fields = (
-            'id',
-            'task',
-            'image',
-            'uploaded_at',
-        )
-        read_only_fields = ('id', 'uploaded_at',)
+        read_only_fields = ('id', 'created_at', 'updated_at', 'creator', 'photos',)
+        
