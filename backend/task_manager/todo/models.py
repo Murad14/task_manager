@@ -16,13 +16,14 @@ class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    #photos = models.ManyToManyField('Photo', related_name='tasks', blank=True)
     
     def __str__(self):
         return self.title
 
 
 class Photo(models.Model):
-    task = models.ForeignKey(Task, related_name='photos', on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, related_name='task_photos', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='task_photos/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
     
