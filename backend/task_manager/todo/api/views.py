@@ -12,6 +12,9 @@ class TaskListCreateView(generics.ListCreateAPIView):
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated]
     
+    def get_queryset(self):
+        return Task.objects.filter(creator=self.request.user)
+    
     def perform_create(self, serializer):
         # Set the creator field to the authenticated user
         serializer.save(creator=self.request.user)
