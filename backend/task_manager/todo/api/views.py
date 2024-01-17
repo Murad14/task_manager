@@ -17,6 +17,7 @@ class TaskCreateView(generics.CreateAPIView):
         serializers = self.get_serializer(data=request.data) 
         
         if serializers.is_valid():
+            print("Validated Data:", serializers.validated_data) # type: ignore
             if request.data['image'] == '':
                 serializers.validated_data['image'] = '/default_images/murad.jpg'
             serializers.save(creator=self.request.user)   
