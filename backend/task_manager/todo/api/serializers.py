@@ -8,7 +8,7 @@ class PhotoSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'uploaded_at')
 
 class TaskSerializer(serializers.ModelSerializer):
-    photos = PhotoSerializer(many=True, read_only=True)
+    #photos = PhotoSerializer(many=True, read_only=True)
 
     class Meta:
         model = Task
@@ -23,6 +23,6 @@ class TaskSerializer(serializers.ModelSerializer):
             'updated_at',
             'creator',
             'assigned_user',
-            'photos',
+            'image',
         )
-        read_only_fields = ('id', 'created_at', 'updated_at', 'creator', 'photos')
+        read_only_fields = ('id', 'created_at', 'updated_at', 'creator', 'image')
