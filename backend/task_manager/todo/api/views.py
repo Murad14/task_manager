@@ -17,32 +17,12 @@ class TaskCreateView(generics.CreateAPIView):
         serializers = self.get_serializer(data=request.data) 
         
         if serializers.is_valid():
-            print("Validated Data:", serializers.validated_data) # type: ignore
+            print("Validated Data:", serializers.validated_data) 
             if request.data['image'] == '':
-                serializers.validated_data['image'] = '/default_images/murad.jpg'
+                serializers.validated_data['image'] = '/default_images/default-image.jpg'
             serializers.save(creator=self.request.user)   
         return Response(serializers.data, status=status.HTTP_201_CREATED)
-    '''   
-    def get_queryset(self):
-        return Task.objects.filter(creator=self.request.user)
-    
-    def perform_create(self, serializer):
-        # Set the creator field to the authenticated user
-        serializer.save(creator=self.request.user)
-    ''' 
-    
 
-class TaskListCreateView(generics.ListCreateAPIView):
-    queryset = Task.objects.all()
-    serializer_class = TaskSerializer
-    permission_classes = [IsAuthenticated]
-    
-    def get_queryset(self):
-        return Task.objects.filter(creator=self.request.user)
-    
-    def perform_create(self, serializer):
-        # Set the creator field to the authenticated user
-        serializer.save(creator=self.request.user)
 
 class TaskRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()

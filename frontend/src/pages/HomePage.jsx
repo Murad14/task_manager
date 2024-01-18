@@ -18,7 +18,7 @@ export default function HomePage() {
                 return;
             }
 
-            const response = await fetch('http://127.0.0.1:8000/api/todo/tasks/', {
+            const response = await fetch('http://127.0.0.1:8000/api/todo/tasks/create/', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -51,7 +51,7 @@ export default function HomePage() {
             formData.append('is_complete', taskIsComplete);
             formData.append('image', taskImage);
 
-            const response = await fetch('http://127.0.0.1:8000/api/todo/tasks/', {
+            const response = await fetch('http://127.0.0.1:8000/api/todo/tasks/create/', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -75,123 +75,127 @@ export default function HomePage() {
 
     return (
         <div>
-            <nav className="shadow-lg">
-                <div className="px-4 mx-auto">
-                    <div className="flex justify-between">
-                        <div>
-                            <a className="flex" href="/home">
-                                <span className="font-semibold text-lg text-gray-500">Task Manager</span>
-                            </a>
-                        </div>
-                        <div className="space-x-1">
-                            <a className="py-4 px-2 text-gray-500 font-semibold" href="/profile">
-                                Profile
-                            </a>
-                            <a className="py-4 px-2 text-gray-500 font-semibold" href="/logout">
-                                Logout
-                            </a>
+            <nav className="bg-blue-500 p-4 shadow-lg">
+                <div className="container mx-auto">
+                    <div className="flex justify-between items-center">
+                        <a href="/home" className="text-white font-semibold text-lg">Task Manager</a>
+                        <div className="space-x-4">
+                            <a href="/profile" className="text-white font-semibold hover:text-gray-300">Profile</a>
+                            <a href="/logout" className="text-white font-semibold hover:text-gray-300">Logout</a>
                         </div>
                     </div>
                 </div>
             </nav>
 
-            <div className="p-4">
-                <h2 className="text-2xl font-semibold mb-4">Your Tasks</h2>
-                <form>
-                    <div className="mb-4">
-                        <label htmlFor="taskTitle" className="block text-gray-700 text-sm font-bold mb-2">
-                            Task Title
-                        </label>
-                        <input
-                            type="text"
-                            id="taskTitle"
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            placeholder="Enter task title"
-                            value={taskTitle}
-                            onChange={(e) => setTaskTitle(e.target.value)}
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="taskDescription" className="block text-gray-700 text-sm font-bold mb-2">
-                            Task Description
-                        </label>
-                        <textarea
-                            id="taskDescription"
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            placeholder="Enter task description"
-                            value={taskDescription}
-                            onChange={(e) => setTaskDescription(e.target.value)}
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="taskDueDate" className="block text-gray-700 text-sm font-bold mb-2">
-                            Due Date
-                        </label>
-                        <input
-                            type="date"
-                            id="taskDueDate"
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            value={taskDueDate}
-                            onChange={(e) => setTaskDueDate(e.target.value)}
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="taskPriority" className="block text-gray-700 text-sm font-bold mb-2">
-                            Priority
-                        </label>
-                        <select
-                            id="taskPriority"
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            value={taskPriority}
-                            onChange={(e) => setTaskPriority(e.target.value)}
-                        >
-                            <option value="Low">Low</option>
-                            <option value="Medium">Medium</option>
-                            <option value="High">High</option>
-                        </select>
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="taskIsComplete" className="block text-gray-700 text-sm font-bold mb-2">
-                            Is Complete
-                        </label>
-                        <input
-                            type="checkbox"
-                            id="taskIsComplete"
-                            className="form-checkbox h-5 w-5 text-blue-500"
-                            checked={taskIsComplete}
-                            onChange={() => setTaskIsComplete(!taskIsComplete)}
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="taskImage" className="block text-gray-700 text-sm font-bold mb-2">
-                            Task Image
-                        </label>
-                        <input
-                            type="file"
-                            id="taskImage"
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            accept="image/*"
-                            onChange={(e) => setTaskImage(e.target.files[0])}
-                        />
-                    </div>
+            <div className='container mx-auto my-8'>
+                <h1 className='text-3xl text-black font-bold uppercase text-center mb-4'>Create Task</h1>
+                <div className='flex justify-center'>
+                    <div className='w-full max-w-md p-6 bg-white shadow-md rounded'>
 
-                    <button
-                        type="button"
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                        onClick={handleCreateTask}
-                    >
-                        Create Task
-                    </button>
-                </form>
+                        <div className="mb-4">
+                            <label htmlFor="taskTitle" className="block text-gray-700 text-sm font-semibold mb-2">
+                                Task Title
+                            </label>
+                            <input
+                                type="text"
+                                id="taskTitle"
+                                className="w-full py-2 px-3 border rounded focus:outline-none focus:shadow-outline"
+                                placeholder="Enter task title"
+                                value={taskTitle}
+                                onChange={(e) => setTaskTitle(e.target.value)}
+                            />
+                        </div>
 
-                <button
-                    className="mt-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    onClick={() => console.log('Implement logic to view all tasks')}
-                >
-                    View All Tasks
-                </button>
+                        <div className="mb-4">
+                            <label htmlFor="taskDescription" className="block text-gray-700 text-sm font-bold mb-2">
+                                Task Description
+                            </label>
+                            <textarea
+                                id="taskDescription"
+                                className="w-full py-2 px-3 border rounded focus:outline-none focus:shadow-outline"
+                                placeholder="Enter task description"
+                                value={taskDescription}
+                                onChange={(e) => setTaskDescription(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="mb-4">
+                            <label htmlFor="taskDueDate" className="block text-gray-700 text-sm font-bold mb-2">
+                                Due Date
+                            </label>
+                            <input
+                                type="date"
+                                id="taskDueDate"
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                value={taskDueDate}
+                                onChange={(e) => setTaskDueDate(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="mb-4">
+                            <label htmlFor="taskPriority" className="block text-gray-700 text-sm font-bold mb-2">
+                                Priority
+                            </label>
+                            <select
+                                id="taskPriority"
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                value={taskPriority}
+                                onChange={(e) => setTaskPriority(e.target.value)}
+                            >
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                            </select>
+                        </div>
+
+                        <div className="mb-4">
+                            <label htmlFor="taskIsComplete" className="block text-gray-700 text-sm font-bold mb-2">
+                                Is Complete
+                            </label>
+                            <input
+                                type="checkbox"
+                                id="taskIsComplete"
+                                className="form-checkbox h-5 w-5 text-blue-500"
+                                checked={taskIsComplete}
+                                onChange={() => setTaskIsComplete(!taskIsComplete)}
+                            />
+                        </div>
+
+                        <div className="mb-4">
+                            <label htmlFor="taskImage" className="block text-gray-700 text-sm font-bold mb-2">
+                                Task Image
+                            </label>
+                            <input
+                                type="file"
+                                id="taskImage"
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                accept="image/*"
+                                onChange={(e) => setTaskImage(e.target.files[0])}
+                            />
+                        </div>
+
+                        <div className='flex justify-center mt-6 space-x-4'>
+                            <button
+                                type="button"
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                onClick={handleCreateTask}
+                            >
+                                Create Task
+                            </button>
+
+                            <button
+                                className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                onClick={() => console.log('Implement logic to view all tasks')}
+                            >
+                                View All Tasks
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     );
 
 }
+
