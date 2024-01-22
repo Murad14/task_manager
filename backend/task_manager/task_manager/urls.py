@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from todo.api.views import TaskListCreateView, TaskRetrieveUpdateDestroyView, PhotoListCreateView, PhotoRetrieveUpdateDestroyView
+from todo.api.views import TaskRetrieveUpdateDestroyView, PhotoListCreateView, PhotoRetrieveUpdateDestroyView
 from rest_framework import routers
 from django.conf import settings
 from django.conf.urls.static import static

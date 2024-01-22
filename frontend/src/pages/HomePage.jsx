@@ -18,7 +18,7 @@ export default function HomePage() {
                 return;
             }
 
-            const response = await fetch('http://127.0.0.1:8000/api/todo/tasks/create/', {
+            const response = await fetch('http://127.0.0.1:8000/api/todo/tasks/', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -49,21 +49,44 @@ export default function HomePage() {
             formData.append('due_date', taskDueDate);
             formData.append('priority', taskPriority);
             formData.append('is_complete', taskIsComplete);
-            formData.append('image', taskImage);
+
+            // Check if taskImage is null, and append the default image path if it is
+            if (taskImage !== null && taskImage !== undefined) {
+                formData.append('image', taskImage);
+            }
+
+            console.log('formData:', formData);
 
             const response = await fetch('http://127.0.0.1:8000/api/todo/tasks/create/', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
                 },
-                body: formData,
+                body: JSON.stringify({
+                    title: taskTitle,
+                    description: taskDescription,
+                    due_date: taskDueDate,
+                    priority: taskPriority,
+                    is_complete: taskIsComplete,
+                    image: taskImage,
+                }),
             });
+
+            console.log('Response:', response);
 
             if (response.ok) {
                 console.log('Task created successfully');
                 // Fetch updated tasks and update the list
                 const updatedTasks = await fetchTasks();
                 setTasks(updatedTasks);
+                // Clear form fields after successful task creation
+                setTaskTitle('');
+                setTaskDescription('');
+                setTaskDueDate('');
+                setTaskPriority('Medium');
+                setTaskIsComplete(false);
+                setTaskImage(null);
             } else {
                 console.error('Error creating task:', response.statusText);
             }
@@ -93,7 +116,7 @@ export default function HomePage() {
                     <div className='w-full max-w-md p-6 bg-white shadow-md rounded'>
 
                         <div className="mb-4">
-                            <label htmlFor="taskTitle" className="block text-gray-700 text-sm font-semibold mb-2">
+                            <label htmlFor="taskTitle" className="block text-gray-700 text-sm font-bold mb-2">
                                 Task Title
                             </label>
                             <input

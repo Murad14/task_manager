@@ -18,12 +18,13 @@ class TaskCreateView(generics.CreateAPIView):
         
         if serializers.is_valid():
             print("Validated Data:", serializers.validated_data) 
+            
             if request.data['image'] == '':
                 serializers.validated_data['image'] = '/default_images/default-image.jpg'
             serializers.save(creator=self.request.user)   
         return Response(serializers.data, status=status.HTTP_201_CREATED)
 
-
+    
 class TaskRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
